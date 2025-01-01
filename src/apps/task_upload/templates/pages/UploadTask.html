@@ -1,0 +1,75 @@
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>{{Title}}</title>
+</head>
+<body>
+{{topics}}
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h2>Загрузить задание</h2>
+
+    <p>{{UploadTask.Image.label }}</p>
+    <p> {{UploadTask.Image}}</p>
+
+    <div id="NumberSelector" >
+        <select name="TaskNumber" id="id_Number" onchange="newSelectedNumber()" required>
+            <option selected='selected' value="" disabled>Выберите номер задания</option>
+            {% for question in Questions %}
+                <option value="{{question.Number}}">{{question.Number}}. {{question.Topic}}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <br>
+    <div id="TopicsSelector">
+        <select name="TopicName" id="id_Topic" required>
+            <option selected='selected' value="" disabled>Чтобы выбрать тему, сначала выберите задание</option>
+        </select>
+    </div>
+
+    <p>{{UploadTask.Condition_for_students}}</p>
+    <p>{{UploadTask.Answer}}</p>
+
+    <div id="IsTaskSource">
+        <select name="IsSource" id="id_IsTaskSource" required onchange="IsTaskSourceChanged()">
+            <option selected='selected' value="" disabled>Это прототип задания?</option>
+            <option value="Да">Да, это прототип одного из заданий.</option>
+            <option value="Нет">Нет, это новое задание.</option>
+        </select>
+    </div>
+
+    <br>
+    <div id="TaskIsOld">
+        <select name="WhatTask" id="OldTaskSelect" hidden>
+            <option selected='selected' value="" disabled>Выберите, против какого это задания!</option>
+        </select>
+    </div>
+
+    <br>
+    <div id="new_task_forms" hidden>
+        <p>Выбери видео-решение (если нужно)</p>
+        <p>{{UploadTask.Video}}</p>
+        <p>Выбери письменное-решение (если нужно)</p>
+        <p>{{UploadTask.Solution}}</p>
+        <p>{{UploadTask.Condition}}</p>
+
+        <div id="dynamicVariableFieldsContainer"></div>
+        <button type="button" onclick="addVariableField()">➕ Добавить ограничения для переменной</button>
+        <br>
+        <hr>
+
+        <div id="dynamicFormulaFieldsContainer"></div>
+        <button type="button" onclick="addFormulaField()">➕ Добавить шаг решения</button>
+        <br>
+        <hr>
+    </div>
+
+    <button name='' class='button-form' type="submit" value="Загрузить">Загрузить</button>
+</form>
+</body>
+   <script>
+       var All_topics = {{ Topics|safe }};
+       var All_SourceTasks = {{ SourceTasks|safe }};
+   </script>
+<script src="{% static 'js/upload_task.js' %}" type="text/javascript"></script>
