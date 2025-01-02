@@ -1,4 +1,4 @@
 from django.urls import path
-from apps.main import views
+from apps.users import views
 
-urlpatterns = [path("", views.index_page, name="index")]
+urlpatterns = [path("", views.registration_page, name="registration")]
