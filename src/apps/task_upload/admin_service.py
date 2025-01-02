@@ -14,6 +14,7 @@ from django import forms
 
 class SourceAnswerInline(admin.TabularInline):
     model = SourceAnswers
+    fields = []
     extra = 1
 
 

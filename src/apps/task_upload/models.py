@@ -1,7 +1,10 @@
 import os
+from uuid import uuid4
 
 from django.db import models
 from django.urls import reverse
+
+from core.settings import MEDIA_ROOT
 
 
 class Questions(models.Model):
@@ -62,7 +65,7 @@ class PrototypeTasks(models.Model):
         upload_to="task_images/",
         height_field=None,
         width_field=None,
-        max_length=100,
+        max_length=2048,
         default=None,
         help_text="Изображение прилагаемое для выполнения задания.",
         verbose_name="Изображение",
@@ -109,6 +112,13 @@ class PrototypeTasks(models.Model):
         verbose_name="Прототип какого задания",
     )
 
+    def save(self, *args, **kwargs):
+        if self.Image:
+            ext = self.Image.name.split(".")[-1]
+            filename = f"{self.Topic}_{uuid4().hex}_{uuid4().hex}.{ext}"
+            self.Image.name = filename
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.Number} {self.Topic}"
 
@@ -124,7 +134,7 @@ class SourceTasks(models.Model):
         upload_to="task_images/",
         height_field=None,
         width_field=None,
-        max_length=100,
+        max_length=512,
         default=None,
         help_text="Изображение прилагаемое для выполнения задания.",
         verbose_name="Изображение",
@@ -134,17 +144,17 @@ class SourceTasks(models.Model):
         upload_to="task_videos/",
         height_field=None,
         width_field=None,
-        max_length=100,
+        max_length=512,
         default=None,
         help_text="Видео-решение задания.",
         verbose_name="Видео-решение",
         blank=True,
     )
     Solution = models.ImageField(
-        upload_to="task_solution/",
+        upload_to="task_solutions/",
         height_field=None,
         width_field=None,
-        max_length=100,
+        max_length=512,
         default=None,
         help_text="Письменное решение задания(изображение).",
         verbose_name="Письменное решение",
@@ -189,6 +199,21 @@ class SourceTasks(models.Model):
         help_text="Условие, которое будут видеть ученики.",
         verbose_name="Условие для учеников",
     )
+
+    def save(self, *args, **kwargs):
+        if self.Image:
+            ext = self.Image.name.split(".")[-1]
+            filename = f"{self.Topic}_{uuid4().hex}_{uuid4().hex}.{ext}"
+            self.Image.name = filename
+        if self.Video:
+            ext = self.Video.name.split(".")[-1]
+            filename = f"{self.Topic}_{uuid4().hex}_{uuid4().hex}.{ext}"
+            self.Video.name = filename
+        if self.Solution:
+            ext = self.Solution.name.split(".")[-1]
+            filename = f"{self.Topic}_{uuid4().hex}_{uuid4().hex}.{ext}"
+            self.Solution.name = filename
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.Topic} ({self.id}) ({self.Condition_for_students})."

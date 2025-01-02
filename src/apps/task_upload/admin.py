@@ -17,9 +17,10 @@ from apps.task_upload.admin_service import (
     PrototypeAnswerInline,
 )
 
+
 def generate_similar_tasks():
-    generate_similar_tasks.short_description = "Сгенерировать похожие задания"
     pass
+
 
 class SourceTasksAdmin(admin.ModelAdmin):
     list_display = ("id", "Number", "Topic", "Condition_for_students", "time_create", "time_update")
@@ -41,6 +42,8 @@ class SourceTasksAdmin(admin.ModelAdmin):
     empty_value_display = "-ничего-"
     list_per_page = 12
     form = TaskForm
+    generate_similar_tasks.short_description = "Сгенерировать похожие задания"
+    generate_similar_tasks.description = "Сгенерировать "
 
 
 class PrototypeTasksAdmin(admin.ModelAdmin):
@@ -61,12 +64,20 @@ class PrototypeTasksAdmin(admin.ModelAdmin):
     list_per_page = 12
     form = TaskForm
 
+
+class TopicsTasksAdmin(admin.ModelAdmin):
+    list_per_page = 20
+    search_fields = (
+        "id",
+        "Topic",
+    )
+    list_filter = ("question_id",)
+
+
 admin.site.register(Questions)
-admin.site.register(Topics)
-admin.site.register(PrototypeTasks, PrototypeTasksAdmin)
+admin.site.register(Topics, TopicsTasksAdmin)
 admin.site.register(SourceTasks, SourceTasksAdmin)
-admin.site.register(Formulas)
-admin.site.register(Limitations)
-admin.site.register(PrototypeAnswers)
-admin.site.register(SourceAnswers)
-admin.site.site_title = "CyberStudy"
+admin.site.register(PrototypeTasks, PrototypeTasksAdmin)
+admin.site.site_header = "TechnoSchool"
+admin.site.site_title = "TechnoSchool"
+admin.site.index_title = "TechnoSchool"
