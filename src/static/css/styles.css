@@ -1,0 +1,136 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* Ресет базовых стилей  */
+
+* {
+	padding: 0px;
+	margin: 0px;
+    font-family: "Montserrat", serif;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+/* Ссылки */
+
+a, a:link, a:visited  {
+    text-decoration: none;
+}
+
+a:hover  {
+    text-decoration: none;
+}
+
+/* Обычные */
+
+ul, ul li {
+	list-style: none;
+}
+
+/* Body */
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #4070f4;
+}
+
+/* Wrapper */
+
+.wrapper {
+    position: relative;
+    padding: 34px;
+
+    max-width: 430px;
+    width: 100%;
+
+    background: #fff;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+}
+
+.wrapper__login {
+    position: relative;
+    font-size: 25px;
+    font-weight: 600;
+    color: #333;
+}
+
+.wrapper__login::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+
+    height: 3px;
+    width: 30px;
+    border-radius: 12px;
+    background: #4070f4;
+
+}
+
+.wrapper__form {
+    margin-top: 25px;
+}
+
+.wrapper__form .input-box {
+    height: 40px;
+    margin: 15px 0;
+}
+
+.wrapper__form .input-box input {
+    padding: 0 15px;
+
+    font-size: 17px;
+    font-weight: 400;
+    color: #333;
+
+    height: 100%;
+    width: 100%;
+    outline: none;
+    border: 1.5px solid #C7BEBE;
+    border-bottom-width: 2px;
+    border-radius: 6px;
+
+    transition: all .3s ease;
+}
+
+.input-box input:focus,
+.input-box input:valid {
+    border-color: #4070f4;
+}
+
+.policy {
+    position: relative;
+}
+
+.policy h3 {
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    transform: translateY(-50%);
+
+    font-size: 16px;
+    font-weight: 550;
+}
+
+.input-box.btn input {
+    color: #fff;
+    letter-spacing: 1px;
+    border: none;
+    background: #4070f4;
+    cursor: pointer;
+}
+
+.input-box.btn input:hover {
+    background: #0e4bf1;
+}
+
+
+
