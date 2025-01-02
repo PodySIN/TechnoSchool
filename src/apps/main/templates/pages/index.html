@@ -1,10 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
+{% load static %}
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>TechnoSchool</title>
 </head>
 <body>
-<a href="admin/">ВОЙТИ В АДМИНКУ!</a>
+    <header class="header">
+        <div class="container">
+            <div class="header__wrapper">
+                <nav class="header__nav">
+                    <a class='logo' href="index.html">
+                        <h1 class="logo">TechnoSchool</h1>
+                    </a>
+                    <a href="#!" class="header__link">Личный Кабинет</a>
+                    <a href="#!" class="header__link header__link-one-row">Варианты</a>
+                    <a href="#!" class="header__link">Домашняя работа</a>
+                    <a href="#!" class="header__link">Каталог задач</a>
+                    <a href="#!" class="header__link">Незавершённые работы</a>
+                    <a href="#!" class="header__link"><i class="fa-sharp fa-solid fa-infinity header__bonus"></i></a>
+                    <a href="#!" class="header__link"><i class="fa-solid fa-not-equal header__bonus"></i></a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <section class="stat">
+        <div class="container stat__container">
+            <div class="stat__wrapper">
+                <h1 class="stat__title">Ваша статистика:</h1>
+                <div class="stat__inner">
+                    <canvas class ='stat__diagram'id="diagram"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{% static 'js\main.js' %}"></script>
 </body>
 </html>
