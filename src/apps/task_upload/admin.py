@@ -17,12 +17,14 @@ from apps.task_upload.admin_service import (
     PrototypeAnswerInline,
 )
 
-
+def generate_similar_tasks():
+    generate_similar_tasks.short_description = "Сгенерировать похожие задания"
+    pass
 
 class SourceTasksAdmin(admin.ModelAdmin):
     list_display = ("id", "Number", "Topic", "Condition_for_students", "time_create", "time_update")
     list_display_links = ("id",)
-    search_fields = ("id", "Condition")
+    search_fields = ("id", "Condition_for_students")
     list_filter = ("Number", "Topic")
     inlines = [SourceAnswerInline, FormulaInline, LimitInline]
     fields = (
@@ -34,6 +36,7 @@ class SourceTasksAdmin(admin.ModelAdmin):
         "Solution",
         "Video",
     )
+    actions = [generate_similar_tasks]
     readonly_fields = ["time_create", "time_update"]
     empty_value_display = "-ничего-"
     list_per_page = 12
@@ -51,12 +54,12 @@ class PrototypeTasksAdmin(admin.ModelAdmin):
         "Topic",
         "Image",
         "Condition",
+        "SourceTask",
     )
     readonly_fields = ["time_create", "time_update"]
     empty_value_display = "-ничего-"
     list_per_page = 12
     form = TaskForm
-
 
 admin.site.register(Questions)
 admin.site.register(Topics)

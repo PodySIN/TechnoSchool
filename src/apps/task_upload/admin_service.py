@@ -14,20 +14,17 @@ from django import forms
 
 class SourceAnswerInline(admin.TabularInline):
     model = SourceAnswers
-    extra = 0
-    min_num = 1
+    extra = 1
 
 
 class PrototypeAnswerInline(admin.TabularInline):
     model = PrototypeAnswers
-    extra = 0
-    min_num = 1
+    extra = 1
 
 
 class FormulaInline(admin.TabularInline):
     model = Formulas
-    extra = 0
-    min_num = 1
+    extra = 1
 
 
 class LimitInline(admin.TabularInline):
