@@ -1,3 +1,5 @@
+import os
+
 from django.db import models
 from django.urls import reverse
 
@@ -22,7 +24,7 @@ class Questions(models.Model):
         db_table = "Questions"
         verbose_name = "Номер задания"
         verbose_name_plural = "Номера заданий"
-        ordering = ["id"]
+        ordering = ["Number", "id"]
 
 
 class Topics(models.Model):
@@ -48,7 +50,7 @@ class Topics(models.Model):
         db_table = "Topics"
         verbose_name = "Тема задания"
         verbose_name_plural = "Темы заданий"
-        ordering = ["id"]
+        ordering = ["question", "id"]
 
 
 class PrototypeTasks(models.Model):
@@ -214,6 +216,9 @@ class Formulas(models.Model):
         verbose_name="Для какого дания формула",
     )
 
+    def __str__(self):
+        return f"{self.Formula} | ({self.Task})."
+
     class Meta:
         db_table = "Formulas"
         verbose_name = "Шаги решения заданий"
@@ -236,6 +241,9 @@ class Limitations(models.Model):
         help_text="Указание, к какому заданию относится это ограничение.",
         verbose_name="Ограничение задания",
     )
+
+    def __str__(self):
+        return f"{self.Limitation} | ({self.Task})."
 
     class Meta:
         db_table = "Limitations"
@@ -260,6 +268,12 @@ class SourceAnswers(models.Model):
         verbose_name="Ответ задания",
     )
 
+    def __str__(self):
+        return f"{self.Answer} | ({self.Task})."
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
     class Meta:
         db_table = "SourceAnswers"
         verbose_name = "Ответы для шаблонов"
@@ -282,6 +296,9 @@ class PrototypeAnswers(models.Model):
         help_text="Указание, к какому заданию относится этот ответ.",
         verbose_name="Ответ задания",
     )
+
+    def __str__(self):
+        return f"{self.Answer} | ({self.Task})."
 
     class Meta:
         db_table = "PrototypeAnswers"
