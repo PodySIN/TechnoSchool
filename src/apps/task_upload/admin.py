@@ -9,17 +9,19 @@ from apps.task_upload.models import (
     PrototypeTasks,
     SourceTasks,
     Formulas,
-    Limitations,
+    StartVariablesLimitations,
     SourceAnswers,
     PrototypeAnswers,
 )
 from apps.task_upload.admin_service import (
     SourceAnswerInline,
     FormulaInline,
-    LimitInline,
     TaskForm,
     PrototypeAnswerInline,
     generate_similar_tasks,
+    FollowingLimitationsInline,
+    StartLimitationsInline,
+    VariablesInline,
 )
 
 
@@ -32,7 +34,13 @@ class SourceTasksAdmin(admin.ModelAdmin):
     list_display_links = ("id",)
     search_fields = ("id", "Condition_for_students")
     list_filter = ("Number", "Topic")
-    inlines = [SourceAnswerInline, FormulaInline, LimitInline]
+    inlines = (
+        SourceAnswerInline,
+        VariablesInline,
+        StartLimitationsInline,
+        FormulaInline,
+        FollowingLimitationsInline,
+    )
     fields = (
         "Number",
         "Topic",
@@ -48,7 +56,9 @@ class SourceTasksAdmin(admin.ModelAdmin):
     list_per_page = 12
     form = TaskForm
     generate_similar_tasks.short_description = "Сгенерировать похожие задания"
-    generate_similar_tasks.description = "Сгенерировать "
+
+    class Media:
+        css = {"all": ("css/admin.css",)}
 
 
 class PrototypeTasksAdmin(admin.ModelAdmin):
@@ -59,7 +69,7 @@ class PrototypeTasksAdmin(admin.ModelAdmin):
     list_display = ("id", "Number", "Topic", "Condition", "time_create", "time_update")
     list_display_links = ("id",)
     search_fields = ("id", "Condition")
-    list_filter = ("Number", "Topic")
+    list_filter = ("Number", "Topic", 'SourceTask_id')
     inlines = [PrototypeAnswerInline]
     fields = (
         "Number",
@@ -72,6 +82,9 @@ class PrototypeTasksAdmin(admin.ModelAdmin):
     empty_value_display = "-ничего-"
     list_per_page = 12
     form = TaskForm
+
+    class Media:
+        css = {"all": ("css/admin.css",)}
 
 
 class TopicsTasksAdmin(admin.ModelAdmin):
@@ -94,9 +107,3 @@ admin.site.register(Questions)
 admin.site.register(Topics, TopicsTasksAdmin)
 admin.site.register(SourceTasks, SourceTasksAdmin)
 admin.site.register(PrototypeTasks, PrototypeTasksAdmin)
-"""
-Кастомизация внешнего вида админ панели.
-"""
-admin.site.site_header = "TechnoSchool"
-admin.site.site_title = "TechnoSchool"
-admin.site.index_title = "TechnoSchool"

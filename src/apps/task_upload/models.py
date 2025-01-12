@@ -1,10 +1,5 @@
-import os
 from uuid import uuid4
-
 from django.db import models
-from django.urls import reverse
-
-from core.settings import MEDIA_ROOT
 
 
 class Questions(models.Model):
@@ -216,7 +211,8 @@ class SourceTasks(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.Topic} ({self.id}) ({self.Condition_for_students})."
+        first_five_words = " ".join(str(self.Condition_for_students).split(" ")[:6])
+        return f"{self.Topic} ({self.id}) ({first_five_words}...)."
 
     class Meta:
         db_table = "SourceTasks"
@@ -248,32 +244,6 @@ class Formulas(models.Model):
         db_table = "Formulas"
         verbose_name = "Шаги решения заданий"
         verbose_name_plural = "Шаги решения"
-        ordering = ["id"]
-
-
-class Limitations(models.Model):
-    Limitation = models.CharField(
-        default="",
-        max_length=2048,
-        help_text="Ограничение задания, которое помогает генерировать задания(если ограничений несколько, добавьте поля).",
-        verbose_name="Ограничение",
-    )
-    Task = models.ForeignKey(
-        "SourceTasks",
-        on_delete=models.CASCADE,
-        default=None,
-        related_name="limitations",
-        help_text="Указание, к какому заданию относится это ограничение.",
-        verbose_name="Ограничение задания",
-    )
-
-    def __str__(self):
-        return f"{self.Limitation} | ({self.Task})."
-
-    class Meta:
-        db_table = "Limitations"
-        verbose_name = "Ограничение для задания"
-        verbose_name_plural = "Ограничения для заданий"
         ordering = ["id"]
 
 
@@ -329,4 +299,91 @@ class PrototypeAnswers(models.Model):
         db_table = "PrototypeAnswers"
         verbose_name = "Ответы для задания"
         verbose_name_plural = "Ответы для заданий"
+        ordering = ["id"]
+
+
+class SourceTasksVariables(models.Model):
+    Task = models.ForeignKey(
+        "SourceTasks",
+        on_delete=models.CASCADE,
+        default=None,
+        related_name="variables",
+        help_text="Указание, к какому заданию относится этот ответ.",
+        verbose_name="Ответ задания",
+    )
+    Start = models.FloatField(
+        default=1,
+        help_text="Начало диапазона, в котором будут перебираться числа",
+        verbose_name="Начало диапазона",
+    )
+    End = models.FloatField(
+        default=1,
+        help_text="Конец диапазона, в котором будут перебираться числа (включительно)",
+        verbose_name="Конец диапазона",
+    )
+    Step = models.FloatField(
+        default=1,
+        help_text="Шаг, который будет перебираться для генерации заданий.",
+        verbose_name="Шаг",
+    )
+
+    def __str__(self):
+        return f"{self.Start}, {self.End}, {self.Step} | ({self.Task})."
+
+    class Meta:
+        db_table = "SourceTasksVariables"
+        verbose_name = "Переменная для задания"
+        verbose_name_plural = "Переменная для заданий"
+        ordering = ["id"]
+
+
+class StartVariablesLimitations(models.Model):
+    Limitation = models.CharField(
+        default="",
+        max_length=2048,
+        help_text="Ограничения задания, которое помогает генерировать задания(если ограничений несколько, добавьте поля).",
+        verbose_name="Ограничения для начальных переменных.",
+    )
+    Task = models.ForeignKey(
+        "SourceTasks",
+        on_delete=models.CASCADE,
+        default=None,
+        related_name="start_limitations",
+        help_text="Указание, к какому заданию относится это ограничение.",
+        verbose_name="Ограничение задания",
+    )
+
+    def __str__(self):
+        return f"{self.Limitation} | ({self.Task})."
+
+    class Meta:
+        db_table = "StartVariablesLimitations"
+        verbose_name = "Ограничение для изменяемых переменных задания"
+        verbose_name_plural = "Ограничения для изменяемых переменных заданий"
+        ordering = ["id"]
+
+
+class FollowingVariablesLimitations(models.Model):
+    Limitation = models.CharField(
+        default="",
+        max_length=2048,
+        help_text="Ограничения переменных, использующихся в ходе решения задания, а также ограничения для ответа.",
+        verbose_name="Ограничения для переменных в шагах решения, а также для ответа.",
+    )
+    Task = models.ForeignKey(
+        "SourceTasks",
+        on_delete=models.CASCADE,
+        default=None,
+        related_name="following_limitations",
+        help_text="Указание, к какому заданию относится это ограничение.",
+        verbose_name="Ограничение задания",
+    )
+
+    def __str__(self):
+        return f"{self.Limitation} | ({self.Task})."
+
+    class Meta:
+        db_table = "FollowingVariablesLimitations"
+        verbose_name = "Ограничение для последующих переменных задания"
+        verbose_name_plural = "Ограничения для последующих переменных заданий"
         ordering = ["id"]
