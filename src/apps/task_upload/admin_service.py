@@ -9,11 +9,15 @@ from apps.task_upload.models import (
     PrototypeTasks,
     SourceTasks,
     Formulas,
-    Limitations,
+    StartVariablesLimitations,
+    FollowingVariablesLimitations,
     SourceAnswers,
     PrototypeAnswers,
+    SourceTasksVariables,
 )
 from django import forms
+
+from apps.task_upload.task_generation import task_generation
 
 
 class SourceAnswerInline(admin.TabularInline):
@@ -43,12 +47,30 @@ class FormulaInline(admin.TabularInline):
     extra = 1
 
 
-class LimitInline(admin.TabularInline):
+class StartLimitationsInline(admin.TabularInline):
     """
-    Класс, который создает поле для добавления дополнительных ограничений.
+    Класс, который создает поле для добавления дополнительных начальных ограничений.
     """
 
-    model = Limitations
+    model = StartVariablesLimitations
+    extra = 1
+
+
+class VariablesInline(admin.TabularInline):
+    """
+    Класс, который создает поле для добавления дополнительных начальных ограничений.
+    """
+
+    model = SourceTasksVariables
+    extra = 0
+
+
+class FollowingLimitationsInline(admin.TabularInline):
+    """
+    Класс, который создает поле для добавления дополнительных последующих ограничений.
+    """
+
+    model = FollowingVariablesLimitations
     extra = 1
 
 
@@ -78,8 +100,8 @@ class TaskForm(forms.ModelForm):
         }
 
 
-def generate_similar_tasks():
+def generate_similar_tasks(path, request, QuerySet):
     """
     Генерирует задания, на основе шаблона.
     """
-    pass
+    task_generation(QuerySet)

@@ -8,7 +8,7 @@ const diagram = new Chart(document.querySelector('#diagram'), {
         labels: ['Средний балл', 'Желаемый балл', 'Следование трекеру(%)', 'Оценка успеваемости'],
         datasets: [{
         label: '',
-        data: [78, 90, 45, 64, 100],
+        data: [78, 94, 45, 64, 100],
         borderWidth: 3,
         borderColor,
         backgroundColor,
